@@ -7,8 +7,11 @@ class Tab{
         this.favicon = favicon;
         if(counter !== undefined){
             this.counter = counter;
-        }else{
+        } else{
             this.counter = 0;
         }
+        this.blacklist = false;
+        this.greylist = false;
     }
+    
 }
