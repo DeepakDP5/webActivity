@@ -1,6 +1,5 @@
 'use strict';
 
-
 class Tab{
     constructor(url,favicon,counter){
         this.url = url;
@@ -11,7 +10,6 @@ class Tab{
             this.counter = 0;
         }
         this.blacklist = false;
-        this.greylist = false;
+        this.limit = -1;
     }
-    
 }
