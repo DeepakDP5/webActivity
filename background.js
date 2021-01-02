@@ -2,6 +2,14 @@ function getHostName(url){
   return url.split('/')[2];
 }
 
+let notiFication = {
+  type: "basic",
+  iconUrl: "icon48.png",
+  title: "Site is GreyListed",
+  message: "This Tab is going to be blocked soon !!!!",
+};
+
+
 setInterval(()=>{
   chrome.windows.getLastFocused({ populate: true }, function(currentWindow) {
     if (currentWindow.focused) {
@@ -15,6 +23,9 @@ setInterval(()=>{
         if(tab){
           if(tab.limit > 0){
             tab.limit--;
+          }
+          if(tab.limit%60 === 0){
+            chrome.notifications.create('limit',notiFication);
           }
           tab.counter++;
           if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
