@@ -4,6 +4,8 @@ const submit = document.getElementById('submit');
 const textArea = document.getElementById('textArea');
 const press = document.getElementById('press');
 
+const btn = document.getElementById('btn');
+
 const html1 = `<div class="alert alert-danger">
 <strong>Warning</strong> The hostname already present in the list!!!
 </div>`;
@@ -21,13 +23,22 @@ function present(dn){
         }else{
             addToList(dn);
             updateBlackList(dn);
-            press.innerHTML = '';
         }
     });
 }
 
 document.addEventListener('DOMContentLoaded',function(){
+    btn.addEventListener('click',()=>{
+        chrome.storage.local.set({tabs:[]},()=>{
+            console.log("values reset");
+        });
+        chrome.storage.local.set({bl:[]},()=>{
+            console.log("values reset");
+        });
+    });
+    
     submit.addEventListener('click',()=>{
+        press.innerHTML = '';
         let x = blacklist.value;
         let ss = -1;    
         let hh = parseInt((time.value).split(':')[0]);
@@ -130,9 +141,9 @@ function deleteFromList(e){
     chrome.storage.local.get({bl:[]}, res=>{
         let arr = res.bl;
         let index = arr.indexOf(dn);
-        console.log(index);
+        //console.log(index);
         arr.splice(arr.indexOf(dn),1);
-        console.log(arr);
+        //console.log(arr);
         chrome.storage.local.set({bl:arr});
     });
 
