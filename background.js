@@ -2,11 +2,18 @@ function getHostName(url){
   return url.split('/')[2];
 }
 
-let notiFication = {
+let notification5m = {
   type: "basic",
   iconUrl: "icon48.png",
-  title: "Site is GreyListed",
-  message: "This Tab is going to be blocked soon !!!!",
+  title: "Site is BlacListed",
+  message: "5 min left !!!",
+};
+
+let notification1m = {
+  type: "basic",
+  iconUrl: "icon48.png",
+  title: "Site is BlackListed",
+  message: "1 min left !!!",
 };
 
 
@@ -19,16 +26,20 @@ setInterval(()=>{
         let arr = result.tabs;
         let tab = arr.find(t=> t.url === getHostName(activeTab.url));
 
-    
+      
         if(tab){
           if(tab.limit > 0){
             tab.limit--;
           }
-          if(tab.limit%60 === 0){
-            chrome.notifications.create('limit',notiFication);
+          if(tab.limit === 300){
+            chrome.notifications.create('limit',notification5m);
+          }
+          if(tab.limit === 60){
+            chrome.notifications.create('limit',notification1m);
           }
           tab.counter++;
           if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
+            
             var blockUrl = chrome.runtime.getURL("block.html") + '?url=' + tab.url;
             chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             chrome.tabs.update(tab.id, { url: blockUrl });
