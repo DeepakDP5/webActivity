@@ -25,7 +25,6 @@ setInterval(()=>{
       chrome.storage.local.get({tabs:[]},(result)=>{
         let arr = result.tabs;
         let tab = arr.find(t=> t.url === getHostName(activeTab.url));
-
       
         if(tab){
           if(tab.limit > 0){
@@ -52,7 +51,9 @@ setInterval(()=>{
           }
           console.log(tab.url);
         }else{
+          let begStr = activeTab.url.substr(0,4);
           let tb = new Tab(getHostName(activeTab.url),activeTab.favIconUrl,0);
+          tb.begstr = begStr;
           arr.push(tb);
           chrome.storage.local.set({tabs:arr},()=>{
             console.log("url saved");

@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         let arr = res.tabs;
         console.log(arr);
         for(let i = 0; i < arr.length; i++){
-            if(arr[i].favicon){
+            if(arr[i].begstr === "http"){
                 if(arr[i].url === currentDomainName){
                     helper(arr[i]);
                 }else{
