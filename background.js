@@ -36,6 +36,9 @@ setInterval(()=>{
           if(tab.limit === 60){
             chrome.notifications.create('limit',notification1m);
           }
+          if(!tab.favicon){
+            tab.favicon = activeTab.favIconUrl;
+          }
           tab.counter++;
           if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
             
@@ -49,14 +52,12 @@ setInterval(()=>{
             console.log("url saved");
             })
           }
-          if(!tab.favicon){
-            tab.favicon = activeTab.favIconUrl;
-          }
           console.log(tab.url);
           console.log(tab.favicon);
         }else{
           let begStr = activeTab.url.substr(0,4);
-          let tb = new Tab(getHostName(activeTab.url),activeTab.favIconUrl,0);
+          let favicon = activeTab.favIconUrl;
+          let tb = new Tab(getHostName(activeTab.url),favicon,0);
           tb.begstr = begStr;
           arr.push(tb);
           chrome.storage.local.set({tabs:arr},()=>{
