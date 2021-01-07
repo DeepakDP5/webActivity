@@ -5,6 +5,24 @@ function getHostName(url){
     return url.split('/')[2];
 }
 
+function html(hr,min,sec,placeholder,favicon,url){
+    return  `<div class = "row">
+        <div class = 'col-2'>
+            <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
+        </div>
+        <div class = 'col-4'>
+            ${url}
+        </div>
+        <div class = 'col-2'>
+                ${hr}:${min}:${sec}
+        </div>
+        <div class = 'col-2'>
+                <p>${placeholder}</p>
+        </div>
+            </div><hr>`;
+}
+
+
 let currentDomainName;
 
 function helper(tab){
@@ -27,52 +45,15 @@ function helper(tab){
         let sec = Math.floor((counter)%60);
             sec = prepended_number = String(sec).padStart(2, '0');
         hlpr.innerHTML = '';
-        let html;
-        if(!checkOneMinLeft){
-            html = `<div class = "row">
-        <div class = 'col-3'>
-            <img src="${favicon}" style = "height:50px;width:50px" class="img-thumbnail">
-        </div>
-        <div class = 'col-6'>
-            ${url}
-        </div>
-        <div class = 'col-3'>
-                ${hr}:${min}:${sec}
-        </div>
-            </div><hr>`
-        }else if(limit === 0){
-            html = `<div class = "row">
-        <div class = 'col-2'>
-            <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
-        </div>
-        <div class = 'col-4'>
-            ${url}
-        </div>
-        <div class = 'col-2'>
-                ${hr}:${min}:${sec}
-        </div>
-        <div class>
-                <p>Exhausted your time</p>
-        </div>
-            </div><hr>`
-        } else {
-            html = `<div class = "row">
-        <div class = 'col-2'>
-            <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
-        </div>
-        <div class = 'col-4'>
-            ${url}
-        </div>
-        <div class = 'col-2'>
-                ${hr}:${min}:${sec}
-        </div>
-        <div class = 'col-2'>
-                ${limit}
-        </div>
-            </div><hr>`
+        let htmlc;
+        if(limit === -1 || limit === 0){
+            placeholder = (limit === 0) ? 'Time Exhausted':'';
+            htmlc = html(hr,min,sec,placeholder,favicon,url);
         }
-        
-        hlpr.innerHTML = html;
+        else{
+            htmlc = html(hr,min,sec,limit,favicon,url);
+        }
+        hlpr.innerHTML = htmlc;
         if(limit > 0 || limit === -1){
             counter++;
         }
@@ -87,6 +68,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             currentDomainName = getHostName(activeTab.url);
         }
     });
+
         
     chrome.storage.local.get({tabs:[]},(res)=>{
         let arr = res.tabs;
@@ -104,20 +86,13 @@ document.addEventListener('DOMContentLoaded',()=>{
                         min = prepended_number = String(min).padStart(2, '0');
                     let sec = Math.floor((counter)%60);
                         sec = prepended_number = String(sec).padStart(2, '0');
+
+                    let favicon = tab.favicon;
+                    let url = tab.url;
+                    let placeholder = tab.limit === 0 ? 'Time Exhausted' : '';
+                    const htmlc = html(hr,min,sec,placeholder,favicon,url);
                     
-                    const html = `<div class = "row">
-                        <div class = 'col-3'>
-                            <img src="${tab.favicon}" alt=""  style = "height:50px;width:50px" class="img-thumbnail">
-                        </div>
-                        <div class = 'col-6'>
-                            ${tab.url}
-                        </div>
-                        <div class = 'col-3'>
-                                ${hr}:${min}:${sec}
-                        </div>
-                    </div><br>`
-                    
-                     textArea.insertAdjacentHTML('afterbegin',html);
+                    textArea.insertAdjacentHTML('afterbegin',htmlc);
                 }
             }
         }

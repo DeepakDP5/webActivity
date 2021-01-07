@@ -25,11 +25,10 @@ setInterval(()=>{
       chrome.storage.local.get({tabs:[]},(result)=>{
         let arr = result.tabs;
         let tab = arr.find(t=> t.url === getHostName(activeTab.url));
-             
+        
         if(tab){
-          console.log(tab.limit);
-          if(tab.limit > 0){
-            tab.limit--;
+          if(tab.limit > 0 && tab.limit <= 60) {
+            chrome.browserAction.setBadgeText({text: tab.limit+'s'});
           }
           if(tab.limit === 300){
             chrome.notifications.create('limit',notification5m);
@@ -37,10 +36,13 @@ setInterval(()=>{
           if(tab.limit === 60){
             chrome.notifications.create('limit',notification1m);
           }
+          if(tab.limit > 0){
+            tab.limit--;
+          }
+          tab.counter++;
           if(!tab.favicon){
             tab.favicon = activeTab.favIconUrl;
           }
-          tab.counter++;
           if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
             var blockUrl = chrome.runtime.getURL("block.html") + '?url=' + tab.url;
             chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
@@ -48,7 +50,7 @@ setInterval(()=>{
             chrome.storage.local.set({tabs:arr},()=>{
               console.log(arr);
             });
-          });
+            });
           }
           else{
             chrome.storage.local.set({tabs:arr},()=>{
