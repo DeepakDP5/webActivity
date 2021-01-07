@@ -27,8 +27,13 @@ setInterval(()=>{
         let tab = arr.find(t=> t.url === getHostName(activeTab.url));
         
         if(tab){
+          if(tab.limit < 0 || tab.limit > 60){
+            chrome.browserAction.setBadgeBackgroundColor({ color: [255, 255, 0, 0] });
+            chrome.browserAction.setBadgeText({text: `${tab.counter}`});
+          }
           if(tab.limit > 0 && tab.limit <= 60) {
-            chrome.browserAction.setBadgeText({text: tab.limit+'s'});
+            chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
+            chrome.browserAction.setBadgeText({text: tab.limit + 's'});
           }
           if(tab.limit === 300){
             chrome.notifications.create('limit',notification5m);
@@ -44,6 +49,7 @@ setInterval(()=>{
             tab.favicon = activeTab.favIconUrl;
           }
           if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
+            chrome.browserAction.setBadgeText({text: ''});
             var blockUrl = chrome.runtime.getURL("block.html") + '?url=' + tab.url;
             chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             chrome.tabs.update(tab.id, { url: blockUrl });

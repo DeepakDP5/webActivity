@@ -19,7 +19,7 @@ function html(hr,min,sec,placeholder,favicon,url){
         <div class = 'col-2'>
                 <p>${placeholder}</p>
         </div>
-            </div><hr>`;
+            </div>`;
 }
 
 
@@ -52,7 +52,9 @@ function helper(tab){
         }
         else{
             htmlc = html(hr,min,sec,limit,favicon,url);
+           
         }
+        htmlc += `<hr>`;
         hlpr.innerHTML = htmlc;
         if(limit > 0 || limit === -1){
             counter++;

@@ -3,6 +3,8 @@ const time = document.getElementById('time');
 const submit = document.getElementById('submit');
 const textArea = document.getElementById('textArea');
 const press = document.getElementById('press');
+const blreset = document.getElementById('blreset');
+const blr = document.getElementById('blr');
 
 const btn = document.getElementById('btn');
 
@@ -82,6 +84,15 @@ document.addEventListener('DOMContentLoaded',function(){
         viewBlackList(arr);
     });
 });
+
+blreset.addEventListener('click',()=>{
+    blr.innerHTML = '';
+    blr.insertAdjacentHTML('afterbegin',`<ul id='textArea' class="listbox" size="15"></ul>`);
+    chrome.storage.local.set({bl:[]},()=>{
+        console.log('bl reset!!');
+    })
+
+})
 
 function viewBlackList(items) {
     if (items !== undefined) {
