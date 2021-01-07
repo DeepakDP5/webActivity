@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded',function(){
         chrome.storage.local.set({bl:[]},()=>{
             console.log("values reset");
         });
+        close();
     });
     
     submit.addEventListener('click',()=>{

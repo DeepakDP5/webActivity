@@ -27,6 +27,7 @@ setInterval(()=>{
         let tab = arr.find(t=> t.url === getHostName(activeTab.url));
              
         if(tab){
+          console.log(tab.limit);
           if(tab.limit > 0){
             tab.limit--;
           }
@@ -41,19 +42,19 @@ setInterval(()=>{
           }
           tab.counter++;
           if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
-            
             var blockUrl = chrome.runtime.getURL("block.html") + '?url=' + tab.url;
             chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
             chrome.tabs.update(tab.id, { url: blockUrl });
+            chrome.storage.local.set({tabs:arr},()=>{
+              console.log(arr);
             });
+          });
           }
           else{
             chrome.storage.local.set({tabs:arr},()=>{
-            console.log("url saved");
+              console.log(arr);
             })
           }
-          console.log(tab.url);
-          console.log(tab.favicon);
         }else{
           let begStr = activeTab.url.substr(0,4);
           let favicon = activeTab.favIconUrl;
@@ -61,7 +62,7 @@ setInterval(()=>{
           tb.begstr = begStr;
           arr.push(tb);
           chrome.storage.local.set({tabs:arr},()=>{
-            console.log("url saved");
+            console.log(arr);
           })            
         }
       })

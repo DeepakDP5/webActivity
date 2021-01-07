@@ -9,8 +9,16 @@ let currentDomainName;
 
 function helper(tab){
     let counter = tab.counter;
+    let limit = tab.limit;
+    let checkOneMinLeft = false;
     let url = tab.url;
     let favicon = tab.favicon;
+    if(limit <= 60 && limit > 0){
+        checkOneMinLeft = true;
+    }
+    console.log(limit);
+
+    
     setInterval(() => {
         let hr = Math.floor((counter)/3600);
             hr = prepended_number = String(hr).padStart(2, '0')
@@ -19,7 +27,9 @@ function helper(tab){
         let sec = Math.floor((counter)%60);
             sec = prepended_number = String(sec).padStart(2, '0');
         hlpr.innerHTML = '';
-        const html = `<div class = "row">
+        let html;
+        if(!checkOneMinLeft){
+            html = `<div class = "row">
         <div class = 'col-3'>
             <img src="${favicon}" style = "height:50px;width:50px" class="img-thumbnail">
         </div>
@@ -29,9 +39,44 @@ function helper(tab){
         <div class = 'col-3'>
                 ${hr}:${min}:${sec}
         </div>
-    </div><hr>`
+            </div><hr>`
+        }else if(limit === 0){
+            html = `<div class = "row">
+        <div class = 'col-2'>
+            <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
+        </div>
+        <div class = 'col-4'>
+            ${url}
+        </div>
+        <div class = 'col-2'>
+                ${hr}:${min}:${sec}
+        </div>
+        <div class>
+                <p>Exhausted your time</p>
+        </div>
+            </div><hr>`
+        } else {
+            html = `<div class = "row">
+        <div class = 'col-2'>
+            <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
+        </div>
+        <div class = 'col-4'>
+            ${url}
+        </div>
+        <div class = 'col-2'>
+                ${hr}:${min}:${sec}
+        </div>
+        <div class = 'col-2'>
+                ${limit}
+        </div>
+            </div><hr>`
+        }
+        
         hlpr.innerHTML = html;
-        counter++;
+        if(limit > 0 || limit === -1){
+            counter++;
+        }
+        if(limit>0) limit--;
     }, 1000);
 }
 
