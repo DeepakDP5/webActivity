@@ -1,6 +1,17 @@
 function getHostName(url){
   return url.split('/')[2];
 }
+function getTimeString(count){
+  if (count >= 60 && count < 3600){
+    let min = Math.floor(count/60);
+    return min+'m';
+  }
+  else if (count >= 3600){
+    let hr = Math.floor(count/3600);
+    return hr+'h';
+  }
+  return count+'s';
+}
 
 let notification5m = {
   type: "basic",
@@ -29,7 +40,7 @@ setInterval(()=>{
         if(tab){
           if(tab.limit < 0 || tab.limit > 60){
             chrome.browserAction.setBadgeBackgroundColor({ color: [255, 255, 0, 0] });
-            chrome.browserAction.setBadgeText({text: `${tab.counter}`});
+            chrome.browserAction.setBadgeText({text: getTimeString(tab.counter)});
           }
           if(tab.limit > 0 && tab.limit <= 60) {
             chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
