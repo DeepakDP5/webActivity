@@ -1,13 +1,13 @@
 setInterval(()=>{
     // Fetching current active tab 
     chrome.windows.getLastFocused({ populate: true }, function(currentWindow) {
-        chrome.browserAction.setBadgeText({text: ''});
         
         if (currentWindow.focused) {
             let activeTab = currentWindow.tabs.find(t => t.active === true);
             
             // Managing Current active tab in storage 
             chrome.storage.local.get({tabs:[]},(result)=>{
+                chrome.browserAction.setBadgeText({text: ''});
                 let arr = result.tabs;
                 let tab = arr.find(t=> t.domain === getHostName(activeTab.url));
                 if(tab){
