@@ -11,6 +11,5 @@ class Tab{
         }
         this.blacklist = false;
         this.limit = -1;
-        this.begstr = "http";
     }
 }

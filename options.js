@@ -22,7 +22,7 @@ function present(dn){
         let ps = arr.find(x=> x === dn);
         if(ps){
             press.insertAdjacentHTML("afterbegin",html1);
-        }else{
+        } else{
             addToList(dn);
             updateBlackList(dn);
         }
@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded',function(){
         chrome.storage.local.set({bl:[]},()=>{
             console.log("values reset");
         });
-        close();
     });
     
     submit.addEventListener('click',()=>{
@@ -51,32 +50,31 @@ document.addEventListener('DOMContentLoaded',function(){
             ss = 0;
         }
         if(x){
-                chrome.storage.local.get({tabs:[]},(result)=>{
-                    let arr = result.tabs;
-                    let tab = arr.find(t=> t.url === x);
-                    if(tab){
-                        tab.blacklist = true;
-                        tab.limit = ss;
-                        chrome.storage.local.set({tabs:arr},()=>{
-                            //console.log(arr);
-                        });
-                    }else{
-                        let tb = new Tab(x,null,0);
-                        tb.limit = ss;
-                        tb.blacklist = true;
-                        arr.push(tb);
-                        chrome.storage.local.set({tabs:arr},()=>{
-                            //console.log(arr);
-                        });
-                    }
-                    addBlackList(x);
-                });
-                blacklist.value = '';
-                time.value = '';
-            }else{
-                press.insertAdjacentHTML("afterbegin",html2);
-            }
-
+            chrome.storage.local.get({tabs:[]},(result)=>{
+                let arr = result.tabs;
+                let tab = arr.find(t=> t.url === x);
+                if(tab){
+                    tab.blacklist = true;
+                    tab.limit = ss;
+                    chrome.storage.local.set({tabs:arr},()=>{
+                        //console.log(arr);
+                    });
+                } else {
+                    let tb = new Tab(x,null,0);
+                    tb.limit = ss;
+                    tb.blacklist = true;
+                    arr.push(tb);   
+                    chrome.storage.local.set({tabs:arr},()=>{
+                        console.log(arr);
+                    });
+                }
+                addBlackList(x);
+            });
+            blacklist.value = '';
+            time.value = '';
+        } else {
+            press.insertAdjacentHTML("afterbegin",html2);
+        }
     });
 
     chrome.storage.local.get({bl:[]},result=>{
@@ -91,7 +89,6 @@ blreset.addEventListener('click',()=>{
     chrome.storage.local.set({bl:[]},()=>{
         console.log('bl reset!!');
     })
-
 })
 
 function viewBlackList(items) {
@@ -105,7 +102,7 @@ function viewBlackList(items) {
 function addBlackList(domainName){
    
     //console.log(present(domainName));
-   present(domainName); 
+    present(domainName); 
 }
 
 function updateBlackList(domainName){
@@ -125,7 +122,7 @@ function addToList(domainName){
     btn.innerText = "Remove";
     //console.log(btn);
     btn.addEventListener('click',(e)=>{
-       deleteFromList(e);
+        deleteFromList(e);
     });
     li.innerText = domainName;
     textArea.appendChild(li).appendChild(btn);

@@ -13,13 +13,13 @@ function html(hr,min,sec,placeholder,favicon,url){
         <div class = 'col-4'>
             ${url}
         </div>
-        <div class = 'col-2'>
-                ${hr}:${min}:${sec}
+        <div class = 'col-3'>
+            ${hr}h ${min}m ${sec}s
         </div>
-        <div class = 'col-2'>
-                <p>${placeholder}</p>
-        </div>
-            </div>`;
+            <div class = 'col-2'>
+                    <p>${placeholder}</p>
+            </div>
+        </div>`;
 }
 
 
@@ -52,7 +52,6 @@ function helper(tab){
         }
         else{
             htmlc = html(hr,min,sec,limit,favicon,url);
-           
         }
         htmlc += `<hr>`;
         hlpr.innerHTML = htmlc;
@@ -76,26 +75,24 @@ document.addEventListener('DOMContentLoaded',()=>{
         let arr = res.tabs;
         console.log(arr);
         for(let i = 0; i < arr.length; i++){
-            if(arr[i].begstr === "http"){
-                if(arr[i].url === currentDomainName){
-                    helper(arr[i]);
-                }else{
-                    let tab = arr[i];
-                    let counter = arr[i].counter;
-                    let hr = Math.floor((counter)/3600);
-                        hr = prepended_number = String(hr).padStart(2, '0')
-                    let min = Math.floor(((counter)%3600)/60);
-                        min = prepended_number = String(min).padStart(2, '0');
-                    let sec = Math.floor((counter)%60);
-                        sec = prepended_number = String(sec).padStart(2, '0');
+            if(arr[i].url === currentDomainName){
+                helper(arr[i]);
+            } else {
+                let tab = arr[i];
+                let counter = arr[i].counter;
+                let hr = Math.floor((counter)/3600);
+                    hr = prepended_number = String(hr).padStart(2, '0')
+                let min = Math.floor(((counter)%3600)/60);
+                    min = prepended_number = String(min).padStart(2, '0');
+                let sec = Math.floor((counter)%60);
+                    sec = prepended_number = String(sec).padStart(2, '0');
 
-                    let favicon = tab.favicon;
-                    let url = tab.url;
-                    let placeholder = tab.limit === 0 ? 'Time Exhausted' : '';
-                    const htmlc = html(hr,min,sec,placeholder,favicon,url);
-                    
-                    textArea.insertAdjacentHTML('afterbegin',htmlc);
-                }
+                let favicon = tab.favicon;
+                let url = tab.url;
+                let placeholder = tab.limit === 0 ? 'Time Exhausted' : '';
+                const htmlc = html(hr,min,sec,placeholder,favicon,url);
+                
+                textArea.insertAdjacentHTML('afterbegin',htmlc);
             }
         }
     });

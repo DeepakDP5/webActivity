@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <!-- CSS only -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-    <link href="ks.css" rel="stylesheet" />
-    
-    <script defer src = "tabs.js"></script>
-    <script defer src="options.js"></script>
-</head>
-<body>
-    <br>
-    <div class = "container">
-       <span id = 'press'></span>
+        <link href="ks.css" rel="stylesheet" />
+        
+        <script defer src = "tabs.js"></script>
+        <script defer src="options.js"></script>
+    </head>
+    <body>
+        <br>
+        <div class = "container">
+            <span id = 'press'></span>
+        </div>
+        <div class = "container">
+            <div class="margin-top-10" id = 'blr'>
+                <ul id='textArea' class="listbox" size="15"></ul>
+            </div>
+        </div>
 
-    </div>
-    <div class = "container">
-    <div class="margin-top-10" id = 'blr'>
-        <ul id='textArea' class="listbox" size="15"></ul>
-    </div>
-    </div>
+        <div class = "container">
+            <input type = "text" id = "blacklist" placeholder="Enter Domain of site to be Blacklist"></input><br><br>
+            <input type = "time" id = "time" placeholder = "HH:mm" ></input>
+            <input type = "submit" id="submit"></input><br><br>
+            <input type = "submit" id = "btn" value = "reset"><br>
+            <input type = "submit" id = "blreset" value = "reset blacklist">
+        </div>
 
-    <div class = "container">
-        <input type = "text" id = "blacklist" placeholder="Enter Domain of site to be Blacklist"></input><br><br>
-        <input type = "time" id = "time" placeholder = "HH:mm" ></input>
-        <input type = "submit" id="submit"></input><br><br>
-        <input type = "submit" id = "btn" value = "reset"><br>
-        <input type = "submit" id = "blreset" value = "reset blacklist">
-    </div>
-
-</body>
+    </body>
 </html>
