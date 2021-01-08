@@ -5,18 +5,18 @@ function getHostName(url){
     return url.split('/')[2];
 }
 
-function html(hr,min,sec,placeholder,favicon,url){
+function html(hr,min,sec,placeholder,favicon,domain){
     return  `<div class = "row">
         <div class = 'col-2'>
             <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
         </div>
         <div class = 'col-4'>
-            ${url}
+            ${domain}
         </div>
         <div class = 'col-3'>
             ${hr}h ${min}m ${sec}s
         </div>
-            <div class = 'col-2'>
+            <div class = 'col-3'>
                     <p>${placeholder}</p>
             </div>
         </div>`;
@@ -29,7 +29,7 @@ function helper(tab){
     let counter = tab.counter;
     let limit = tab.limit;
     let checkOneMinLeft = false;
-    let url = tab.url;
+    let domain = tab.domain;
     let favicon = tab.favicon;
     if(limit <= 60 && limit > 0){
         checkOneMinLeft = true;
@@ -48,10 +48,10 @@ function helper(tab){
         let htmlc;
         if(limit === -1 || limit === 0){
             placeholder = (limit === 0) ? 'Time Exhausted':'';
-            htmlc = html(hr,min,sec,placeholder,favicon,url);
+            htmlc = html(hr,min,sec,placeholder,favicon,domain);
         }
         else{
-            htmlc = html(hr,min,sec,limit,favicon,url);
+            htmlc = html(hr,min,sec,limit,favicon,domain);
         }
         htmlc += `<hr>`;
         hlpr.innerHTML = htmlc;
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         let arr = res.tabs;
         console.log(arr);
         for(let i = 0; i < arr.length; i++){
-            if(arr[i].url === currentDomainName){
+            if(arr[i].domain === currentDomainName){
                 helper(arr[i]);
             } else {
                 let tab = arr[i];
@@ -88,9 +88,9 @@ document.addEventListener('DOMContentLoaded',()=>{
                     sec = prepended_number = String(sec).padStart(2, '0');
 
                 let favicon = tab.favicon;
-                let url = tab.url;
+                let domain = tab.domain;
                 let placeholder = tab.limit === 0 ? 'Time Exhausted' : '';
-                const htmlc = html(hr,min,sec,placeholder,favicon,url);
+                const htmlc = html(hr,min,sec,placeholder,favicon,domain);
                 
                 textArea.insertAdjacentHTML('afterbegin',htmlc);
             }

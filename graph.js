@@ -14,7 +14,7 @@ chrome.storage.local.get({tabs:[]},(res)=>{
     
 
     let lbl = dispArr.map(tab => {
-        return tab.url;
+        return tab.domain;
     });
     let ctr = dispArr.map(tab =>{
         return (tab.counter*100/totalSum).toFixed(2);

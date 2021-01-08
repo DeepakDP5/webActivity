@@ -2,11 +2,12 @@ const blacklist = document.getElementById('blacklist');
 const time = document.getElementById('time');
 const submit = document.getElementById('submit');
 const textArea = document.getElementById('textArea');
-const press = document.getElementById('press');
+const alert = document.getElementById('alert');
 const blreset = document.getElementById('blreset');
 const blr = document.getElementById('blr');
+const reset = document.getElementById('reset');
 
-const btn = document.getElementById('btn');
+
 
 const html1 = `<div class="alert alert-danger">
 <strong>Warning</strong> The hostname already present in the list!!!
@@ -21,7 +22,7 @@ function present(dn){
         let arr = res.bl;
         let ps = arr.find(x=> x === dn);
         if(ps){
-            press.insertAdjacentHTML("afterbegin",html1);
+            alert.insertAdjacentHTML("afterbegin",html1);
         } else{
             addToList(dn);
             updateBlackList(dn);
@@ -30,7 +31,7 @@ function present(dn){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
-    btn.addEventListener('click',()=>{
+    reset.addEventListener('click',()=>{
         chrome.storage.local.set({tabs:[]},()=>{
             console.log("values reset");
         });
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     
     submit.addEventListener('click',()=>{
-        press.innerHTML = '';
+        alert.innerHTML = '';
         let x = blacklist.value;
         let ss = -1;    
         let hh = parseInt((time.value).split(':')[0]);
@@ -52,28 +53,20 @@ document.addEventListener('DOMContentLoaded',function(){
         if(x){
             chrome.storage.local.get({tabs:[]},(result)=>{
                 let arr = result.tabs;
-                let tab = arr.find(t=> t.url === x);
+                let tab = arr.find(t=> t.domain === x);
                 if(tab){
                     tab.blacklist = true;
                     tab.limit = ss;
-                    chrome.storage.local.set({tabs:arr},()=>{
-                        //console.log(arr);
-                    });
+                    chrome.storage.local.set({tabs:arr},()=>{});
                 } else {
-                    let tb = new Tab(x,null,0);
-                    tb.limit = ss;
-                    tb.blacklist = true;
-                    arr.push(tb);   
-                    chrome.storage.local.set({tabs:arr},()=>{
-                        console.log(arr);
-                    });
+                    addNewTab(x,null,arr,ss,true);
                 }
                 addBlackList(x);
             });
             blacklist.value = '';
             time.value = '';
         } else {
-            press.insertAdjacentHTML("afterbegin",html2);
+            alert.insertAdjacentHTML("afterbegin",html2);
         }
     });
 
@@ -136,7 +129,7 @@ function deleteFromList(e){
     chrome.storage.local.get({tabs:[]},res=>{
         let arr = res.tabs;
 
-        let node = arr.find(x => x.url === dn);
+        let node = arr.find(x => x.domain === dn);
         
         if(node){
             //console.log(node);
@@ -157,6 +150,6 @@ function deleteFromList(e){
     });
 
     textArea.removeChild(target);
-    press.innerHTML = '';
+    alert.innerHTML = '';
 }
 

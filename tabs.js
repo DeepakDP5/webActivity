@@ -1,8 +1,8 @@
 'use strict';
 
 class Tab{
-    constructor(url,favicon,counter){
-        this.url = url;
+    constructor(domain,favicon,counter){
+        this.domain = domain;
         this.favicon = favicon;
         if(counter !== undefined){
             this.counter = counter;
