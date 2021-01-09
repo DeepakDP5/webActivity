@@ -16,7 +16,6 @@ setInterval(()=>{
                     counterAndLimitManager(tab);
                     faviconValidator(tab,activeTab);
                     blacklistAndStorageUpdate(tab,arr);
-
                 } else {
                     let domain = getHostName(activeTab.url);
                     let favicon = activeTab.favIconUrl;

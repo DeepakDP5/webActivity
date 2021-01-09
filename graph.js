@@ -1,13 +1,9 @@
 const mychart = document.getElementById('ctx');
 let arr = [];
 
-
-
 chrome.storage.local.get({tabs:[]},(res)=>{
     arr = res.tabs;
-    arr.sort((a,b)=>{
-        return (b.counter - a.counter);
-    });
+    arr = sortTabs(arr);
     let dispArr = (arr.length >= 10)? arr.slice(0,10):arr;
     let totalSum =  arr.reduce((a,b)=> a+b.counter,0);
     let dispArrSum = dispArr.reduce((a,b)=> a+b.counter,0);
@@ -24,7 +20,6 @@ chrome.storage.local.get({tabs:[]},(res)=>{
         let otherTimePercent =  (((totalSum-dispArrSum)*100)/totalSum).toFixed(2);
         ctr.push(otherTimePercent);
     }
-    //console.log(ctr);
     
 
     let myChart = new Chart(mychart, {

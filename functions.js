@@ -1,3 +1,13 @@
+const blacklist = document.getElementById('blacklist');
+const time = document.getElementById('time');
+const submit = document.getElementById('submit');
+const textArea = document.getElementById('textArea');
+const alert = document.getElementById('alert');
+const blreset = document.getElementById('blreset');
+const blr = document.getElementById('blr');
+const reset = document.getElementById('reset');
+
+
 let notification5m = {
     type: "basic",
     iconUrl: "icon48.png",
@@ -28,6 +38,28 @@ function getTimeStringSmall(count){
     return count+'s';
 }
 
+function getTimeStringBig(count){
+    let h = Math.floor(count/3600);
+    h = prepended_number = String(h).padStart(2, '0');
+    let m = Math.floor((count%3600)/60);
+    m = prepended_number = String(m).padStart(2, '0');
+    let s = count%60;
+    s = prepended_number = String(s).padStart(2, '0');
+    let timeStr = (h+'h '+m+'m '+s+'s');
+    return timeStr;
+}
+
+function stringToSec(str){
+    let ss = -1;    
+    let hh = parseInt((str).split(':')[0]);
+    let mm = parseInt((str).split(':')[1]);
+    ss = hh*3600 + mm*60;
+    if(isNaN(ss)){
+        ss = 0;
+    }
+    return ss;
+}
+
 function showBadge(limit,counter){
     if(limit < 0 || limit > 60){
         chrome.browserAction.setBadgeBackgroundColor({ color: [255, 255, 0, 0] });
@@ -37,7 +69,7 @@ function showBadge(limit,counter){
         chrome.browserAction.setBadgeBackgroundColor({ color: [255, 0, 0, 255] });
         chrome.browserAction.setBadgeText({text: limit + 's'});
     }
-};
+}
 
 function showNotification(limit){
     if(limit === 300){
@@ -46,7 +78,7 @@ function showNotification(limit){
     if(limit === 60){
         chrome.notifications.create('limit',notification1m);
     }
-};
+}
 
 
 function blacklistRedirection(arr,tab){
@@ -56,7 +88,7 @@ function blacklistRedirection(arr,tab){
         chrome.tabs.update(tab.id, { url: blockUrl });
         chrome.storage.local.set({tabs:arr},()=>{});
     });
-};
+}
 
 
 function counterAndLimitManager(tab){
@@ -67,13 +99,12 @@ function counterAndLimitManager(tab){
 }
 
 function faviconValidator(tab,activeTab){
-    if(!tab.favicon){
-        tab.favicon = activeTab.favIconUrl;
-    }     
-    if(activeTab.favIconUrl === undefined){
-        tab.favicon = "chrome://favicon";
-    }   
-};
+    activeTab.favIconUrl = activeTab.favIconUrl || "chrome://favicon";
+    if(tab.favicon !== undefined && tab.favicon !== "chrome://favicon"){
+        return;
+    }
+    tab.favicon = activeTab.favIconUrl;
+}
 
 function blacklistAndStorageUpdate(tab,arr){
     if(tab.blacklist === true && tab.limit !== -1 && tab.limit === 0){
@@ -81,7 +112,7 @@ function blacklistAndStorageUpdate(tab,arr){
     } else {
         chrome.storage.local.set({tabs:arr},()=>{});
     }
-};
+}
 
 function isValidUrl(url){
     let begStr = url.substr(0,4);
@@ -94,4 +125,136 @@ function addNewTab(domain,favicon,arr,limit,blacklist=false){
     tb.limit = limit;
     arr.push(tb);
     chrome.storage.local.set({tabs:arr},()=>{});
-};
+}
+
+function deleteFromList(e){
+    var domain = e.path[1].firstChild.data;
+  
+    var target = e.path[1];
+    chrome.storage.local.get({tabs:[]},res=>{
+        let arr = res.tabs;
+
+        let node = arr.find(x => x.domain === domain);
+        
+        if(node){
+            
+            node.blacklist = false;
+            node.limit = -1;
+        }
+        chrome.storage.local.set({tabs:arr});
+       
+    });
+
+    chrome.storage.local.get({bl:[]}, res=>{
+        let arr = res.bl;
+        let index = arr.indexOf(domain);
+        arr.splice(arr.indexOf(domain),1);
+        chrome.storage.local.set({bl:arr});
+    });
+
+    textArea.removeChild(target);
+    alert.innerHTML = '';
+}
+
+
+
+function addToList(domainName){
+    let li = document.createElement('li');
+    let btn = document.createElement('BUTTON');
+    btn.innerText = "Remove";
+    btn.addEventListener('click',(e)=>{
+        deleteFromList(e);
+    });
+    li.innerText = domainName;
+    textArea.appendChild(li).appendChild(btn);
+}
+
+function viewBlackList(items) {
+    if (items !== undefined) {
+        for (var i = 0; i < items.length; i++) {
+            addToList(items[i]);
+        }
+    }
+}
+
+function updateBlackList(domainName){
+    chrome.storage.local.get({bl:[]},result=>{
+        let arr = result.bl;
+        arr.push(domainName);
+        chrome.storage.local.set({bl:arr},()=>{});
+    });
+}
+
+function present(domain){
+    chrome.storage.local.get({bl:[]},res=>{
+        let arr = res.bl;
+        let ps = arr.find(x=> x === domain);
+        if(ps){
+            alert.insertAdjacentHTML("afterbegin",`<div class="alert alert-danger">
+            <strong>Warning</strong> The hostname already present in the list!!!
+            </div>`);
+        } else {
+            addToList(domain);
+            updateBlackList(domain);
+        }
+    });
+}
+
+function addBlackList(domainName){
+    present(domainName); 
+}
+
+function sortTabs(arr){
+   let p =  arr.sort((a,b)=>{
+        return (b.counter - a.counter);
+    });
+    return p;
+}
+
+function html(timeStr,placeholder,favicon,domain){
+    return  `<div class = "row">
+                <div class = 'col-2'>
+                    <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
+                </div>
+                <div class = 'col-4'>
+                    ${domain}
+                </div>
+                <div class = 'col-3'>
+                    ${timeStr}
+                </div>
+                <div class = 'col-3'>
+                    <p>${placeholder}</p>
+                </div>
+            </div>`;
+}
+
+function dispCurActiveDomain(tab){
+    let counter = tab.counter;
+    let limit = tab.limit;
+    let checkOneMinLeft = false;
+    let domain = tab.domain;
+    let favicon = tab.favicon;
+    if(favicon === undefined) favicon = 'chrome://favicon';
+    if(limit <= 60 && limit > 0){
+        checkOneMinLeft = true;
+    }
+    
+    setInterval(() => {
+        let timeStr = getTimeStringBig(counter);
+        activetab.innerHTML = '';
+        let htmlc;
+        if(limit === -1 || limit === 0){
+            placeholder = (limit === 0) ? 'Time Exhausted':'';
+            htmlc = html(timeStr,placeholder,favicon,domain);
+        }
+        else{
+            htmlc = html(timeStr,limit,favicon,domain);
+        }
+        htmlc += `<hr>`;
+        activetab.innerHTML = htmlc;
+        if(limit > 0 || limit === -1){
+            counter++;
+        }
+        if(limit>0) limit--;
+    }, 1000);
+}
