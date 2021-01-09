@@ -1,66 +1,7 @@
-const textArea = document.getElementById('textArea');
-const hlpr = document.getElementById('helper');
-
-function getHostName(url){
-    return url.split('/')[2];
-}
-
-function html(hr,min,sec,placeholder,favicon,domain){
-    return  `<div class = "row">
-        <div class = 'col-2'>
-            <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
-        </div>
-        <div class = 'col-4'>
-            ${domain}
-        </div>
-        <div class = 'col-3'>
-            ${hr}h ${min}m ${sec}s
-        </div>
-            <div class = 'col-3'>
-                    <p>${placeholder}</p>
-            </div>
-        </div>`;
-}
-
+const displayArea = document.getElementById('displayArea');
+const activetab = document.getElementById('activetab');
 
 let currentDomainName;
-
-function helper(tab){
-    let counter = tab.counter;
-    let limit = tab.limit;
-    let checkOneMinLeft = false;
-    let domain = tab.domain;
-    let favicon = tab.favicon;
-    if(limit <= 60 && limit > 0){
-        checkOneMinLeft = true;
-    }
-    console.log(limit);
-
-    
-    setInterval(() => {
-        let hr = Math.floor((counter)/3600);
-            hr = prepended_number = String(hr).padStart(2, '0')
-        let min = Math.floor(((counter)%3600)/60);
-            min = prepended_number = String(min).padStart(2, '0');
-        let sec = Math.floor((counter)%60);
-            sec = prepended_number = String(sec).padStart(2, '0');
-        hlpr.innerHTML = '';
-        let htmlc;
-        if(limit === -1 || limit === 0){
-            placeholder = (limit === 0) ? 'Time Exhausted':'';
-            htmlc = html(hr,min,sec,placeholder,favicon,domain);
-        }
-        else{
-            htmlc = html(hr,min,sec,limit,favicon,domain);
-        }
-        htmlc += `<hr>`;
-        hlpr.innerHTML = htmlc;
-        if(limit > 0 || limit === -1){
-            counter++;
-        }
-        if(limit>0) limit--;
-    }, 1000);
-}
 
 document.addEventListener('DOMContentLoaded',()=>{
     chrome.windows.getLastFocused({ populate: true }, function(currentWindow){
@@ -69,31 +10,28 @@ document.addEventListener('DOMContentLoaded',()=>{
             currentDomainName = getHostName(activeTab.url);
         }
     });
-
-        
+    
     chrome.storage.local.get({tabs:[]},(res)=>{
         let arr = res.tabs;
-        console.log(arr);
+        arr = sortTabs(arr);
+
         for(let i = 0; i < arr.length; i++){
             if(arr[i].domain === currentDomainName){
-                helper(arr[i]);
+                dispCurActiveDomain(arr[i]);
             } else {
                 let tab = arr[i];
                 let counter = arr[i].counter;
-                let hr = Math.floor((counter)/3600);
-                    hr = prepended_number = String(hr).padStart(2, '0')
-                let min = Math.floor(((counter)%3600)/60);
-                    min = prepended_number = String(min).padStart(2, '0');
-                let sec = Math.floor((counter)%60);
-                    sec = prepended_number = String(sec).padStart(2, '0');
-
+                let timeStr = getTimeStringBig(counter);
                 let favicon = tab.favicon;
                 let domain = tab.domain;
                 let placeholder = tab.limit === 0 ? 'Time Exhausted' : '';
-                const htmlc = html(hr,min,sec,placeholder,favicon,domain);
-                
-                textArea.insertAdjacentHTML('afterbegin',htmlc);
+                let htmlc = html(timeStr,placeholder,favicon,domain);
+                if(i === (arr.length - 1)){
+                    htmlc += '<hr>';
+                }
+                displayArea.insertAdjacentHTML('beforeend',htmlc);
             }
+
         }
     });
 });
