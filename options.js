@@ -1,16 +1,18 @@
 document.addEventListener('DOMContentLoaded',function(){
     // TODO 
-    reset.addEventListener('click',()=>{
+    reset.addEventListener('click',(e)=>{
+        
         alert.innerHTML = '';
         chrome.storage.local.set({tabs:[]},()=>{});
         chrome.storage.local.set({bl:[]},()=>{});
     });
     
-    submit.addEventListener('click',()=>{
+    submit.addEventListener('click',(e)=>{
+        e.preventDefault();
         alert.innerHTML = '';
         let x = blacklist.value;
-        console.log(time.value);
-        console.log(typeof(time.value));
+       0// console.log(time.value);
+        //console.log(typeof(time.value));
         let ss = stringToSec(time.value);
         if(x){
             chrome.storage.local.get({tabs:[]},(result)=>{
@@ -19,6 +21,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 if(tab){
                     tab.blacklist = true;
                     tab.limit = ss;
+                    //console.log(arr);
                     chrome.storage.local.set({tabs:arr},()=>{});
                 } else {
                     addNewTab(x,null,arr,ss,true);
@@ -40,10 +43,5 @@ document.addEventListener('DOMContentLoaded',function(){
     });
 });
 
-blreset.addEventListener('click',()=>{
-    alert.innerHTML = '';
-    blr.innerHTML = '';
-    blr.insertAdjacentHTML('afterbegin',`<ul id='textArea' class="listbox" size="15"></ul>`);
-    chrome.storage.local.set({bl:[]},()=>{
-    });
-})
+
+

@@ -99,8 +99,9 @@ function counterAndLimitManager(tab){
 }
 
 function faviconValidator(tab,activeTab){
+    console.log(tab.favicon);
     activeTab.favIconUrl = activeTab.favIconUrl || "chrome://favicon";
-    if(tab.favicon !== undefined && tab.favicon !== "chrome://favicon"){
+    if((tab.favicon !== undefined  && tab.favicon !== null )&& tab.favicon !== "chrome://favicon"){
         return;
     }
     tab.favicon = activeTab.favIconUrl;
@@ -123,7 +124,9 @@ function addNewTab(domain,favicon,arr,limit,blacklist=false){
     let tb = new Tab(domain,favicon,0);
     tb.blacklist = blacklist;
     tb.limit = limit;
+    faviconValidator(tb,{});
     arr.push(tb);
+    console.log(arr);
     chrome.storage.local.set({tabs:arr},()=>{});
 }
 

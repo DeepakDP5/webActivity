@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <style>
+        <!-- <style>
             body {
               background-image: url('bg.jpg');
               background-repeat: no-repeat;
               background-attachment: fixed; 
               background-size: 100% 100%;
             }
-            </style>
+            </style> -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
@@ -20,7 +20,7 @@
         <script defer src = "tabs.js"></script>
         <script defer src="functions.js"></script>
         <script defer src="options.js"></script>
-        <script defer src="timepicker.min.js"></script>
+        
     </head>
     <body>
         <br>
@@ -28,18 +28,39 @@
             <span id = 'alert'></span>
         </div>
         <div class = "container">
-            <div class="margin-top-10" id = 'blr'>
+            <div class = "row">
+            <h6>The Blacklisted Domain goes here!!!</h6>
+            <div class="margin-top-10 col-6" id = 'blr'>
                 <ul id='textArea' class="listbox" size="15"></ul>
+            </div>
             </div>
         </div>
 
-        <div class = "container">
+        <!-- <div class = "container">
             <input type = "text" id = "blacklist" placeholder="Enter Domain of site to be Blacklist"></input><br><br>
             <input type= "text" id = "time" placeholder='hh:mm'></input><br>
             <input type = "submit" id="submit"></input><br><br>
             <input type = "submit" id = "reset" value = "reset"><br>
             <input type = "submit" id = "blreset" value = "reset blacklist">
-        </div>
+        </div> -->
+        <div>
 
+            <form class = container>
+               
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control mb-2" id="blacklist" placeholder="Enter Site to be blacklisted !!!" style="width:80%;">
+                     </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="time" placeholder="Enter Time (hh:mm)" style="width:60%;">
+                    </div>
+                
+                    <div class="col-sm-3"><br>
+                        <button type="submit" class="btn btn-primary mb-2" id = "submit" style="margin-left: 0px;">Submit</button>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-danger mb-2" id = "reset">Reset</button>
+                    </div>
+            </form>
+            </div>
     </body>
 </html>
