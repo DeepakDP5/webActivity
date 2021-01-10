@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded',function(){
     submit.addEventListener('click',()=>{
         alert.innerHTML = '';
         let x = blacklist.value;
-        let ss = stringToSec(x);
+        console.log(time.value);
+        console.log(typeof(time.value));
+        let ss = stringToSec(time.value);
         if(x){
             chrome.storage.local.get({tabs:[]},(result)=>{
                 let arr = result.tabs;

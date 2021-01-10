@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <style>
+            body {
+              background-image: url('bg.jpg');
+              background-repeat: no-repeat;
+              background-attachment: fixed; 
+              background-size: 100% 100%;
+            }
+            </style>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
@@ -12,6 +20,7 @@
         <script defer src = "tabs.js"></script>
         <script defer src="functions.js"></script>
         <script defer src="options.js"></script>
+        <script defer src="timepicker.min.js"></script>
     </head>
     <body>
         <br>
@@ -26,7 +35,7 @@
 
         <div class = "container">
             <input type = "text" id = "blacklist" placeholder="Enter Domain of site to be Blacklist"></input><br><br>
-            <input type = "time" id = "time" placeholder = "HH:mm" ></input>
+            <input type= "text" id = "time" placeholder='hh:mm'></input><br>
             <input type = "submit" id="submit"></input><br><br>
             <input type = "submit" id = "reset" value = "reset"><br>
             <input type = "submit" id = "blreset" value = "reset blacklist">
