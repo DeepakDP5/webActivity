@@ -164,6 +164,8 @@ function deleteFromList(e){
 function addToList(domainName){
     let li = document.createElement('li');
     let btn = document.createElement('BUTTON');
+    btn.className = "btn btn-danger btn-sm";
+    btn.style.cssText = "margin-left:5px;"
     btn.innerText = "Remove";
     btn.addEventListener('click',(e)=>{
         deleteFromList(e);
@@ -217,15 +219,15 @@ function sortTabs(arr){
 function html(timeStr,placeholder,favicon,domain){
     return  `<div class = "row">
                 <div class = 'col-2'>
-                    <img src="${favicon}" style = "height:45px;width:45px" class="img-thumbnail">
+                    <img src="${favicon}" style = "height:30px;width:30px" class="img-thumbnail">
                 </div>
                 <div class = 'col-4'>
                     ${domain}
                 </div>
-                <div class = 'col-3'>
+                <div class = 'col-3' align-item:right;>
                     ${timeStr}
                 </div>
-                <div class = 'col-3'>
+                <div class = 'col-3' style = "align-item:right;">
                     <p>${placeholder}</p>
                 </div>
             </div>`;
