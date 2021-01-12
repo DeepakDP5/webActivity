@@ -1,8 +1,13 @@
-.listbox{
-    overflow-y: auto;
-    width: 600px;
-    height: 250px;
-    padding: 3px;
-    padding: 3px 5px 3px 5px;
-    border: 1px solid rgb(172, 169, 169);
+.listbox {
+	overflow-y: auto;
+	width: 650px;
+	height: 255px;
+	padding: 3px;
+	padding: 3px 5px 3px 5px;
+	border: 1px solid rgb(172, 169, 169);
+}
+
+li {
+	margin: 2px 0;
+	padding-left: 0px;
 }
