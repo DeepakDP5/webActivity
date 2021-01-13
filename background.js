@@ -5,6 +5,9 @@ setInterval(()=>{
         if (currentWindow.focused) {
             let activeTab = currentWindow.tabs.find(t => t.active === true);
             
+            // Redirecting back the page removed from blacklist
+            redirectBack(activeTab);
+
             // Managing Current active tab in storage
             chrome.storage.local.get({tabs:[]},(result)=>{
                 chrome.browserAction.setBadgeText({text: ''});

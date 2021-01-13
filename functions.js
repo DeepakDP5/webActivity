@@ -3,8 +3,8 @@ const time = document.getElementById('time');
 const submit = document.getElementById('submit');
 const textArea = document.getElementById('textArea');
 const alert = document.getElementById('alert');
-const blreset = document.getElementById('blreset');
-const blr = document.getElementById('blr');
+// const blreset = document.getElementById('blreset');
+// const blr = document.getElementById('blr');
 const reset = document.getElementById('reset');
 
 
@@ -60,6 +60,22 @@ function stringToSec(str){
     return ss;
 }
 
+function redirectBack(activeTab){
+    let x = new URL(activeTab.url);
+    let dmn = x.searchParams.get("XTYZA@K");
+    if(dmn){
+        chrome.storage.local.get({bl:[]},(res)=>{
+            let arr = res.bl;
+            let dm = arr.find(el => el === dmn);
+            if(!dm){
+                chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
+                    chrome.tabs.update({url: `http://${dmn}`});
+                });
+            }
+        });
+    }
+}
+
 function showBadge(limit,counter){
     if(limit < 0 || limit > 60){
         chrome.browserAction.setBadgeBackgroundColor({ color: [255, 255, 0, 0] });
@@ -80,16 +96,14 @@ function showNotification(limit){
     }
 }
 
-
 function blacklistRedirection(arr,tab){
     chrome.browserAction.setBadgeText({text: ''});
-    let blockUrl = chrome.runtime.getURL("block.html") + '?domain=' + tab.domain;
+    let blockUrl = chrome.runtime.getURL("block.html") + '?XTYZA@K=' + tab.domain;
     chrome.tabs.query({ currentWindow: true, active: true }, function(tab) {
         chrome.tabs.update(tab.id, { url: blockUrl });
         chrome.storage.local.set({tabs:arr},()=>{});
     });
 }
-
 
 function counterAndLimitManager(tab){
     if(tab.limit > 0){
@@ -99,7 +113,7 @@ function counterAndLimitManager(tab){
 }
 
 function faviconValidator(tab,activeTab){
-    console.log(tab.favicon);
+    // console.log(tab.favicon);
     activeTab.favIconUrl = activeTab.favIconUrl || "chrome://favicon";
     if((tab.favicon !== undefined  && tab.favicon !== null )&& tab.favicon !== "chrome://favicon"){
         return;
@@ -126,7 +140,7 @@ function addNewTab(domain,favicon,arr,limit,blacklist=false){
     tb.limit = limit;
     faviconValidator(tb,{});
     arr.push(tb);
-    console.log(arr);
+    // console.log(arr);
     chrome.storage.local.set({tabs:arr},()=>{});
 }
 
@@ -159,14 +173,12 @@ function deleteFromList(e){
     alert.innerHTML = '';
 }
 
-
-
 function addToList(domainName){
     let li = document.createElement('li');
     let btn = document.createElement('BUTTON');
     btn.className = "btn btn-danger btn-sm";
     btn.style.cssText = "margin-left:5px;"
-    btn.innerText = "Remove";
+    btn.innerText = "X";
     btn.addEventListener('click',(e)=>{
         deleteFromList(e);
     });
@@ -218,17 +230,17 @@ function sortTabs(arr){
 
 function html(timeStr,placeholder,favicon,domain){
     return  `<div class = "row">
-                <div class = 'col-2'>
+                <div class = 'col-auto'>
                     <img src="${favicon}" style = "height:30px;width:30px" class="img-thumbnail">
                 </div>
-                <div class = 'col-4'>
+                <div class = 'col-5' style="margin-left:0;">
                     ${domain}
                 </div>
-                <div class = 'col-3' align-item:right;>
-                    ${timeStr}
-                </div>
                 <div class = 'col-3' style = "align-item:right;">
-                    <p>${placeholder}</p>
+                    ${placeholder}
+                </div>
+                <div class = 'col-auto' align-item:right;>
+                    ${timeStr}
                 </div>
             </div>`;
 }
@@ -249,11 +261,11 @@ function dispCurActiveDomain(tab){
         activetab.innerHTML = '';
         let htmlc;
         if(limit === -1 || limit === 0){
-            placeholder = (limit === 0) ? 'Time Exhausted':'';
+            placeholder = (limit === 0) ? 'Blacklisted!':'';
             htmlc = html(timeStr,placeholder,favicon,domain);
         }
         else{
-            htmlc = html(timeStr,limit,favicon,domain);
+            htmlc = html(timeStr,getTimeStringBig(limit),favicon,domain);
         }
         htmlc += `<hr>`;
         activetab.innerHTML = htmlc;
@@ -262,4 +274,17 @@ function dispCurActiveDomain(tab){
         }
         if(limit>0) limit--;
     }, 1000);
+}
+
+function resetBlacklist(){
+    chrome.storage.local.set({bl:[]});
+    chrome.storage.local.get({tabs:[]}, res => {
+        let arr = res.tabs;
+        arr.forEach(element => {
+            element.blacklist = false;
+            element.limit = -1;
+        });
+        chrome.storage.local.set({tabs:arr});
+        textArea.innerHTML = "";
+    });
 }

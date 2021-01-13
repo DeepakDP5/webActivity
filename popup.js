@@ -24,14 +24,13 @@ document.addEventListener('DOMContentLoaded',()=>{
                 let timeStr = getTimeStringBig(counter);
                 let favicon = tab.favicon;
                 let domain = tab.domain;
-                let placeholder = tab.limit === 0 ? 'Time Exhausted' : '';
+                let placeholder = tab.limit === 0 ? 'Blacklisted!' : '';
                 let htmlc = html(timeStr,placeholder,favicon,domain);
                 if(i === (arr.length - 1)){
                     htmlc += '<hr>';
                 }
                 displayArea.insertAdjacentHTML('beforeend',htmlc);
             }
-
         }
     });
 });

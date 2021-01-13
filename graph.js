@@ -7,7 +7,6 @@ chrome.storage.local.get({tabs:[]},(res)=>{
     let dispArr = (arr.length >= 10)? arr.slice(0,10):arr;
     let totalSum =  arr.reduce((a,b)=> a+b.counter,0);
     let dispArrSum = dispArr.reduce((a,b)=> a+b.counter,0);
-    
 
     let lbl = dispArr.map(tab => {
         return tab.domain;
@@ -20,7 +19,6 @@ chrome.storage.local.get({tabs:[]},(res)=>{
         let otherTimePercent =  (((totalSum-dispArrSum)*100)/totalSum).toFixed(2);
         ctr.push(otherTimePercent);
     }
-    
 
     let myChart = new Chart(mychart, {
         type: 'doughnut',
@@ -40,7 +38,7 @@ chrome.storage.local.get({tabs:[]},(res)=>{
                     'rgba(3, 252, 32, 0.9)',
                     'rgba(252, 235, 3, 0.9)',
                     'rgba(252, 3, 3,0.9)'
-                ].reverse(),
+                ],
                 borderColor: [
                     // 'rgba(255, 99, 132, 1)',
                     // 'rgba(54, 162, 235, 1)',
@@ -53,8 +51,8 @@ chrome.storage.local.get({tabs:[]},(res)=>{
             }]
         },
         options: {
-            scales: {
-                circumference: 1/10
+            legend: {
+                position: 'right'
             }
         }
     });

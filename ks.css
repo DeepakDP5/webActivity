@@ -1,6 +1,6 @@
 .listbox {
 	overflow-y: auto;
-	width: 650px;
+	width: 565px;
 	height: 255px;
 	padding: 3px;
 	padding: 3px 5px 3px 5px;
@@ -10,4 +10,9 @@
 li {
 	margin: 2px 0;
 	padding-left: 0px;
+}
+
+body {
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 300;
 }
