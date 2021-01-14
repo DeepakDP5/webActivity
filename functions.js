@@ -49,6 +49,16 @@ function getTimeStringBig(count){
     return timeStr;
 }
 
+function getTimeLong(count){
+    let h = Math.floor(count/3600);
+    h = prepended_number = String(h).padStart(2, '0');
+    let m = Math.floor((count%3600)/60);
+    m = prepended_number = String(m).padStart(2, '0');
+    let s = count%60;
+    s = prepended_number = String(s).padStart(2, '0');
+    return [h,m,s];
+}
+
 function stringToSec(str){
     let ss = -1;    
     let hh = parseInt((str).split(':')[0]);
@@ -61,9 +71,17 @@ function stringToSec(str){
 }
 
 function redirectBack(activeTab){
-    let x = new URL(activeTab.url);
-    let dmn = x.searchParams.get("XTYZA@K");
-    if(dmn){
+    let url = activeTab.url;
+    let index = url.indexOf("XTYZA@K");
+    let val = '';
+    if(index !== -1){
+        index = index+8;
+        for(let x = index; x < url.length; x++){
+            val  = val + url[x];
+        }
+    }
+    let dmn = val;
+    if(index !== -1){
         chrome.storage.local.get({bl:[]},(res)=>{
             let arr = res.bl;
             let dm = arr.find(el => el === dmn);
@@ -255,7 +273,6 @@ function dispCurActiveDomain(tab){
     if(limit <= 60 && limit > 0){
         checkOneMinLeft = true;
     }
-    
     setInterval(() => {
         let timeStr = getTimeStringBig(counter);
         activetab.innerHTML = '';
@@ -287,4 +304,15 @@ function resetBlacklist(){
         chrome.storage.local.set({tabs:arr});
         textArea.innerHTML = "";
     });
+}
+
+
+function removeData(){
+    chrome.storage.local.set({tabs:[]},()=>{});
+    chrome.storage.local.set({bl:[]},()=>{
+        
+    });
+    textArea.innerHTML = "";
+        blacklist.innerHTML = "";
+        alert.innerHTML = "";
 }

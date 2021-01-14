@@ -12,9 +12,14 @@ li {
 	padding-left: 0px;
 }
 
-body {
+#Recbody {
 	font-family: 'Ubuntu', sans-serif;
 	font-weight: 300;
+}
+
+#ATbody {
+	font-family: 'Open sans', sans-serif;
+	font-weight: 400;
 }
 
 a {
