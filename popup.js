@@ -1,6 +1,8 @@
 const displayArea = document.getElementById('displayArea');
 const activetab = document.getElementById('activetab');
 
+const options = document.getElementById('options');
+
 let currentDomainName;
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -33,4 +35,9 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
         }
     });
+
+    options.addEventListener('click',()=>{
+        window.open(chrome.runtime.getURL('options.html'));
+
+    })
 });

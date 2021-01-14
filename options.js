@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded',function(){
         
         alert.innerHTML = '';
         chrome.storage.local.set({tabs:[]},()=>{});
-        chrome.storage.local.set({bl:[]},()=>{});
+        chrome.storage.local.set({bl:[]},()=>{
+            textArea.innerHTML = '';
+            blacklist.value = '';
+        });
     });
     
     submit.addEventListener('click',(e)=>{
