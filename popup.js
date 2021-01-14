@@ -37,7 +37,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
 
     options.addEventListener('click',()=>{
-        window.open(chrome.runtime.getURL('options.html'));
-
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        } else {
+            window.open(chrome.runtime.getURL('options.html'));
+        }
     })
 });

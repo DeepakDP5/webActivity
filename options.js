@@ -1,4 +1,27 @@
 const resetBL = document.getElementById('resetBL');
+/*let d = new Date();
+let h = d.getHours();
+let m = d.getMinutes();
+console.log(h,m);
+*/
+
+let H = 20;
+let M = 00;
+
+setInterval(()=> {
+    let d = new Date();
+    let h = d.getHours();
+    let m = d.getMinutes();
+    
+    if(h === H && m === M){
+        alert.innerHTML = '';
+        chrome.storage.local.set({tabs:[]},()=>{});
+        chrome.storage.local.set({bl:[]},()=>{
+            textArea.innerHTML = '';
+            blacklist.value = '';
+        });
+    }
+},60000);
 
 document.addEventListener('DOMContentLoaded',function(){
     // console.log(now.getTime());
