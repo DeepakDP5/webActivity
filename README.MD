@@ -1,4 +1,4 @@
-# Web Activity Tracker !(icon128.jpg)
+# Web Activity Tracker [!(icon128.jpg)]
 
 This a chrome extension that monitors and summerizes the user's web activity. The purpose of this extension is to self analyze one's web usage and increase productivity by greylisting/blacklisting the websites that user finds unproductive.
 
