@@ -249,7 +249,7 @@ function html(timeStr,placeholder,favicon,domain){
                 <div class = 'col-5' style="margin-left:0;">
                     ${domain}
                 </div>
-                <div class = 'col-3' style = "align-item:right;">
+                <div class = 'col-3' style = "align-item:right; color:red;">
                     ${placeholder}
                 </div>
                 <div class = 'col-auto' align-item:right;>
