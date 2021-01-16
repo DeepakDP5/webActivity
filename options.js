@@ -48,6 +48,20 @@ document.addEventListener('DOMContentLoaded',function(){
                     tab.limit = ss;
                     chrome.storage.local.set({tabs:arr},()=>{});
                 } else {
+                    chrome.storage.local.get({allTabs:[]},(res) =>{
+                        let allArr = res.allTabs;
+                        let alltab = allArr.find(t => t.domain === x);
+                        if(!alltab){
+                            let alldomain = x;
+                            let allfavicon = null;
+                            let tb = new Tab(alldomain,allfavicon,0);
+                            tb.blacklist = false;
+                            tb.limit = -1;
+                            faviconValidator(tb,{});
+                            allArr.push(tb);
+                            chrome.storage.local.set({allTabs:allArr},()=>{});
+                        }
+                    });
                     addNewTab(x,null,arr,ss,true);
                 }
                 addBlackList(x);
