@@ -154,7 +154,6 @@ function addNewTab(domain,favicon,arr,limit,blacklist=false){
     tb.limit = limit;
     faviconValidator(tb,{});
     arr.push(tb);
-    // console.log(arr);
     chrome.storage.local.set({tabs:arr},()=>{});
 }
 
@@ -306,7 +305,4 @@ function resetBlacklist(){
 function removeData(){
     chrome.storage.local.set({tabs:[]},()=>{});
     chrome.storage.local.set({bl:[]},()=>{});
-    // textArea.innerHTML = "";
-    // blacklist.innerHTML = "";
-    // alert.innerHTML = "";
 }

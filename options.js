@@ -1,5 +1,4 @@
 const resetBL = document.getElementById('resetBL');
-// const resetTime = document.getElementById('resetTime');
 const submitTime = document.getElementById('submitTime');
 const reset = document.getElementById('reset');
 const resetAll = document.getElementById('resetAll');
@@ -30,7 +29,7 @@ document.addEventListener('DOMContentLoaded',function(){
         let st = stringToSec(resetTime[0].value);
         chrome.storage.local.get(['s'], ()=> {
             chrome.storage.local.set({s:st});
-            // resetTime[0].value = '';
+          
         });
     });
     
