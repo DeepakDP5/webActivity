@@ -1,33 +1,12 @@
 const resetBL = document.getElementById('resetBL');
-/*let d = new Date();
-let h = d.getHours();
-let m = d.getMinutes();
-console.log(h,m);
-*/
-
-let H = 20;
-let M = 00;
-
-setInterval(()=> {
-    let d = new Date();
-    let h = d.getHours();
-    let m = d.getMinutes();
-    
-    if(h === H && m === M){
-        alert.innerHTML = '';
-        chrome.storage.local.set({tabs:[]},()=>{});
-        chrome.storage.local.set({bl:[]},()=>{
-            textArea.innerHTML = '';
-            blacklist.value = '';
-        });
-    }
-},60000);
+// const resetTime = document.getElementById('resetTime');
+const submitTime = document.getElementById('submitTime');
+const reset = document.getElementById('reset');
+const resetAll = document.getElementById('resetAll');
 
 document.addEventListener('DOMContentLoaded',function(){
-    // console.log(now.getTime());
-    // TODO 
+
     reset.addEventListener('click',(e)=>{
-        
         alert.innerHTML = '';
         chrome.storage.local.set({tabs:[]},()=>{});
         chrome.storage.local.set({bl:[]},()=>{
@@ -35,13 +14,31 @@ document.addEventListener('DOMContentLoaded',function(){
             blacklist.value = '';
         });
     });
+
+    resetAll.addEventListener('click',(e)=>{
+        alert.innerHTML = '';
+        chrome.storage.local.set({tabs:[]},()=>{});
+        chrome.storage.local.set({allTabs:[]},()=>{});
+        chrome.storage.local.set({s:15600},()=>{});
+        chrome.storage.local.set({bl:[]},()=>{
+            textArea.innerHTML = '';
+            blacklist.value = '';
+        });
+    });
+
+    submitTime.addEventListener('click',(e)=>{
+        let st = stringToSec(resetTime[0].value);
+        chrome.storage.local.get(['s'], ()=> {
+            chrome.storage.local.set({s:st});
+            // resetTime[0].value = '';
+        });
+    });
     
     submit.addEventListener('click',(e)=>{
-        // e.preventDefault();
         alert.innerHTML = '';
         let x = blacklist.value;
 
-        let ss = stringToSec(time.value);
+        let ss = stringToSec(time[0].value);
         if(x){
             chrome.storage.local.get({tabs:[]},(result)=>{
                 let arr = result.tabs;
@@ -49,7 +46,6 @@ document.addEventListener('DOMContentLoaded',function(){
                 if(tab){
                     tab.blacklist = true;
                     tab.limit = ss;
-                    // console.log(arr);
                     chrome.storage.local.set({tabs:arr},()=>{});
                 } else {
                     addNewTab(x,null,arr,ss,true);
@@ -57,7 +53,7 @@ document.addEventListener('DOMContentLoaded',function(){
                 addBlackList(x);
             });
             blacklist.value = '';
-            time.value = '';
+            time[0].value = '';
         } else {
             alert.insertAdjacentHTML("afterbegin", `<div class="alert alert-danger">
                                                         Enter A domain name to be blacklisted!!!
@@ -66,7 +62,6 @@ document.addEventListener('DOMContentLoaded',function(){
     });
 
     resetBL.addEventListener('click', (e)=> {
-        // console.log(e);
         resetBlacklist();
     });    
 

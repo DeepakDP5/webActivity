@@ -8,7 +8,6 @@
         <script defer src = "popup.js"></script>
         <script defer src = "Chart.js"></script>
         <script defer src = "functions.js"></script>
-
         <script defer src = "graph.js"></script>
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -21,7 +20,7 @@
         
     </head>
 
-    <body>
+    <body id="Recbody">
         
         <div id="extensionTitle">
             <p class="title"><img src = "icon128.png" height="30" width="30"></img>&nbsp;Web Activity Time Tracker&emsp;&emsp;&emsp;&emsp;<button class="btn btn-outline-secondary" id="options">Options</button></p>
@@ -39,17 +38,18 @@
             </div>
         </div> -->
 
-        <div class = "container">
-            <canvas id="ctx" style="height:100px; align-items:centre"></canvas>
-            
-            <hr>
-        </div>
-        <div class = 'container' id = 'activetab'>
-            
-        </div>
-    
-        <div class = 'container' id = 'displayArea'>
-            
+        <div id = "display">
+            <div class = "container">
+                <canvas id="ctx" style="height:100px; align-items:centre"></canvas>
+                <hr>
+            </div>
+            <div class = 'container' id = 'activetab'>
+                
+            </div>
+        
+            <div class = 'container' id = 'displayArea'>
+                
+            </div>
         </div>
         
     </body>

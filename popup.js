@@ -1,7 +1,9 @@
 const displayArea = document.getElementById('displayArea');
 const activetab = document.getElementById('activetab');
-
 const options = document.getElementById('options');
+const btnAllTime = document.getElementById('btnAllTime');
+const btnToday = document.getElementById('btnToday');
+const allTDispArea = document.getElementById('allTDispArea');
 
 let currentDomainName;
 
@@ -13,10 +15,11 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     });
     
+    activetab.innerHTML = '';
+    displayArea.innerHTML = '';
     chrome.storage.local.get({tabs:[]},(res)=>{
         let arr = res.tabs;
         arr = sortTabs(arr);
-
         for(let i = 0; i < arr.length; i++){
             if(arr[i].domain === currentDomainName){
                 dispCurActiveDomain(arr[i]);
@@ -35,6 +38,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
         }
     });
+    
 
     options.addEventListener('click',()=>{
         if (chrome.runtime.openOptionsPage) {
@@ -42,5 +46,10 @@ document.addEventListener('DOMContentLoaded',()=>{
         } else {
             window.open(chrome.runtime.getURL('options.html'));
         }
-    })
+    });
+
+    btnAllTime.addEventListener('click',()=>{
+        window.open(chrome.runtime.getURL('allTime.html'));
+    });
+
 });
